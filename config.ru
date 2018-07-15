@@ -1,17 +1,25 @@
-@routes = { get:{} }
+module Draque
+  @@routes = { get:{} }
 
-def draque(env)
-  path = env['PATH_INFO']
-  if res = @routes[:get][path]
-    res.call(env)
-  else
-    [ 404, headers, not_found ]
+  def draque(env)
+    path = env['PATH_INFO']
+    if res = @@routes[:get][path]
+      res.call(env)
+    else
+      [ 404, headers, not_found ]
+    end
+  end
+
+  def get(path, &blk)
+    @@routes[:get][path] = blk
+  end
+
+  def headers
+    {'Content-Type' => 'text/html'}
   end
 end
 
-def get(path, &blk)
-  @routes[:get][path] = blk
-end
+Object.send(:include, Draque)
 
 get '/draque' do
   [ 200, headers, draque_body ]
@@ -19,10 +27,6 @@ end
 
 get '/' do |env|
   [ 200, headers, top_body(env) ]
-end
-
-def headers
-  {'Content-Type' => 'text/html'}
 end
 
 def top_body(env)
