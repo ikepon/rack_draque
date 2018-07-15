@@ -1,7 +1,5 @@
-class Fixnum
-  def call(arg)
-    return 200, {'one' => '1', 'Content-Type' => 'text/plain'}, "Welcome to ONE".chars
-  end
+def draque(arg)
+  return 200, {'one' => '1', 'Content-Type' => 'text/plain'}, "Welcome to the World of Draque!!".chars
 end
 
-run 1
+run method(:draque)
