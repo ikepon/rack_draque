@@ -1,10 +1,24 @@
+@routes = { get:{} }
+
 def draque(env)
   path = env['PATH_INFO']
-  case path
-  when '/draque' then [ 200, headers, draque_body ]
-  when '/'       then [ 200, headers, top_body(env) ]
-  else [ 404, headers, not_found ]
+  if res = @routes[:get][path]
+    res.call(env)
+  else
+    [ 404, headers, not_found ]
   end
+end
+
+def get(path, &blk)
+  @routes[:get][path] = blk
+end
+
+get '/draque' do
+  [ 200, headers, draque_body ]
+end
+
+get '/' do |env|
+  [ 200, headers, top_body(env) ]
 end
 
 def headers
