@@ -1,12 +1,12 @@
 require "./draque"
 
 class UpDown
-  def initialize(arg)
-
+  def initialize(app)
+    @app = app
   end
 
-  def call(arg)
-    return 200, {'Content-Type' => 'text/html'}, "Hello, from UpDown".chars
+  def call(env)
+    @app.call(env)
   end
 end
 
